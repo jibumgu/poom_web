@@ -992,10 +992,15 @@ h3 {
   gap: 24px;
   align-items: center;
   margin: clamp(34px, 6vw, 84px) clamp(18px, 5vw, 68px);
+  max-width: calc(100vw - clamp(36px, 10vw, 136px));
 }
 
 .download-section h2 {
   white-space: nowrap;
+}
+
+.download-section > div {
+  min-width: 0;
 }
 
 .download-actions {
@@ -1109,6 +1114,10 @@ h3 {
 
   .download-section h2 {
     white-space: normal;
+  }
+
+  .download-section {
+    max-width: none;
   }
 }
 
@@ -1314,12 +1323,32 @@ h3 {
 
   .download-section {
     grid-template-columns: 1fr;
+    gap: 18px;
     margin: 38px 16px;
-    padding: 22px;
+    padding: 22px 18px;
+    width: auto;
+    max-width: calc(100vw - 32px);
   }
 
   .download-section h2 {
+    font-size: clamp(1.35rem, 7vw, 1.85rem);
+    line-height: 1.24;
     white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .download-section p {
+    overflow-wrap: anywhere;
+  }
+
+  .download-actions {
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .store-button {
+    min-height: 58px;
   }
 
   .site-footer {
@@ -1360,6 +1389,17 @@ h3 {
 
   .segmented-control {
     grid-template-columns: 1fr;
+  }
+
+  .download-section {
+    margin-right: 12px;
+    margin-left: 12px;
+    padding: 20px 14px;
+    max-width: calc(100vw - 24px);
+  }
+
+  .store-button {
+    padding: 10px 12px;
   }
 }
 
