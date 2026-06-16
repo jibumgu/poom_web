@@ -1154,11 +1154,12 @@ h3 {
   }
 
   .intro-brand {
-    grid-template-columns: 1fr;
+    grid-template-columns: auto minmax(0, auto);
     justify-items: center;
-    gap: 12px;
+    column-gap: 10px;
+    row-gap: 10px;
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
     text-align: center;
   }
 
@@ -1172,6 +1173,7 @@ h3 {
   .intro-text {
     max-width: 100%;
     font-size: clamp(1.08rem, 5vw, 1.32rem);
+    justify-self: start;
   }
 
   .intro-typed {
@@ -1179,7 +1181,7 @@ h3 {
   }
 
   .intro-subtitle {
-    grid-column: auto;
+    grid-column: 1 / -1;
     font-size: 0.96rem;
   }
 
@@ -1398,7 +1400,7 @@ h3 {
 @media (max-width: 380px) {
   .intro-brand {
     gap: 10px;
-    max-width: 288px;
+    max-width: 306px;
   }
 
   .intro-mark {
