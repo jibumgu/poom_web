@@ -749,28 +749,12 @@ h3 {
 }
 
 .hero-panel.preview-flash {
-  animation: previewFlash 1200ms ease;
-}
-
-@keyframes previewFlash {
-  0% {
-    border-color: #dfe6df;
-    box-shadow: 0 18px 42px rgba(42, 53, 49, 0.08);
-  }
-
-  22% {
-    border-color: rgba(37, 109, 93, 0.62);
-    background: rgba(237, 247, 242, 0.94);
-    box-shadow:
-      0 18px 42px rgba(42, 53, 49, 0.08),
-      0 0 0 4px rgba(37, 109, 93, 0.14),
-      0 0 34px rgba(37, 109, 93, 0.28);
-  }
-
-  100% {
-    border-color: #dfe6df;
-    box-shadow: 0 18px 42px rgba(42, 53, 49, 0.08);
-  }
+  border-color: rgba(37, 109, 93, 0.62);
+  background: rgba(237, 247, 242, 0.94);
+  box-shadow:
+    0 18px 42px rgba(42, 53, 49, 0.08),
+    0 0 0 4px rgba(37, 109, 93, 0.14),
+    0 0 34px rgba(37, 109, 93, 0.28);
 }
 
 .section-row {
