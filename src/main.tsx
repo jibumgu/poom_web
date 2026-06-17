@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./styles.css";
 
 type Audience = "guardian" | "caregiver" | "partner";
+type Language = "ko" | "en";
 
 type Feature = {
   title: string;
@@ -156,15 +157,216 @@ const partnerItems: [string, string][] = [
   ["지자체와 기관", "지역 단위의 안전한 임시 보호 체계를 함께 실험할 수 있습니다."]
 ];
 
+const englishContent = {
+  navItems: [
+    { id: "why", label: "Why Poom" },
+    { id: "service", label: "Flow" },
+    { id: "app-experience", label: "App" },
+    { id: "trust", label: "Safety" },
+    { id: "faq", label: "FAQ" }
+  ],
+  audienceLabels: {
+    guardian: "Requester",
+    caregiver: "Caregiver",
+    partner: "Partner"
+  } satisfies Record<Audience, string>,
+  audienceCopy: {
+    guardian: [
+      {
+        title: "A request form for difficult situations",
+        copy: "Owners can calmly explain situations such as sudden moves, health issues, or financial hardship."
+      },
+      {
+        title: "Condition-based caregiver search",
+        copy: "Candidates are reviewed by area, period, care conditions, and verification status."
+      },
+      {
+        title: "Private 1:1 conversation in the app",
+        copy: "A private chat opens only after both sides confirm their intention to match."
+      }
+    ],
+    caregiver: [
+      {
+        title: "Choose only care you can handle",
+        copy: "Set your available period, animal type, home environment, and experience level in advance."
+      },
+      {
+        title: "Review verified information",
+        copy: "Check health information, daily routines, and required preparation before making a decision."
+      },
+      {
+        title: "Handover checklist",
+        copy: "Meals, walks, medication, hospital records, and emergency contacts are organized in the app."
+      }
+    ],
+    partner: [
+      {
+        title: "Local support network",
+        copy: "Hospitals, organizations, and local institutions can discover requests before abandonment happens."
+      },
+      {
+        title: "Sensitive information protection",
+        copy: "The public website explains the service only. Personal data and conversations stay inside the app."
+      },
+      {
+        title: "Follow-up structure",
+        copy: "After handover, the app can help manage check-ins so the connection does not end as a one-time event."
+      }
+    ]
+  } satisfies Record<Audience, Feature[]>,
+  serviceSteps: [
+    ["Situation summary", "The current owner enters the needed help, period, area, and care conditions in the app."],
+    ["Candidate review", "Caregivers see only requests that match what they can realistically handle."],
+    ["Mutual confirmation", "A 1:1 match is created only when both the requester and caregiver agree."],
+    ["App chat", "A private chat opens only for the two matched people."],
+    ["Safe handover", "Health, daily routine, and emergency information are handed over through a checklist."]
+  ] as [string, string][],
+  appPreviewSteps: [
+    { title: "Request help", copy: "Period, area, and care conditions" },
+    { title: "Mutual match", copy: "Both sides confirm the match" },
+    { title: "Private chat", copy: "Conversation and handover inside the app" }
+  ] satisfies Step[],
+  reasons: [
+    ["Hard-to-explain situations", "A guardian's situation can be complex and sensitive. Poom is designed to organize before judging."],
+    ["Preventing unrealistic matches", "Good intentions are not enough. Period, environment, and experience must be checked."],
+    ["Handover gaps", "Missing food, hospital records, routines, or emergency contacts can make the next care unstable."]
+  ] as [string, string][],
+  trustPrinciples: [
+    ["Mutual consent", "A conversation does not open by one person's choice alone."],
+    ["Minimum information", "Public information is limited to what is necessary."],
+    ["Verification-based", "Basic identity and care conditions are checked."],
+    ["Recorded handover", "Important information is kept in a checklist instead of being scattered in chat."]
+  ] as [string, string][],
+  preparationItems: [
+    ["Before requesting", "Organize the current situation, possible period, area, and essential care conditions."],
+    ["Health information", "Prepare vaccination, medication, hospital records, and eating habits for the next caregiver."],
+    ["Living environment", "Caregivers check home conditions, family consent, available time, and experience."],
+    ["Handover method", "Meeting place, travel method, supplies, and emergency contacts are aligned in the app."]
+  ] as [string, string][],
+  roadmapItems: [
+    ["Preparing", "The website first shares Poom's direction and safety principles."],
+    ["Private test", "Requests, mutual confirmation, private chat, and handover checklists are tested."],
+    ["Local launch", "Poom starts in manageable areas before expanding wider."],
+    ["Official release", "Download guidance will be provided for the App Store and Google Play."]
+  ] as [string, string][],
+  faqs: [
+    ["Can I request help directly on the website?", "No. The website explains Poom. Sensitive requests and conversations are designed to happen only in the app."],
+    ["When does chat open?", "A private chat opens only after the requester and caregiver mutually confirm a 1:1 match."],
+    ["Does the operator decide the match?", "No. The operator does not confirm matches arbitrarily. A match is based on mutual confirmation."],
+    ["What information is needed for handover?", "Meals, routines, health status, hospital records, medication, and emergency contacts should be organized."]
+  ] as [string, string][],
+  partnerItems: [
+    ["Animal hospitals", "Health information and pre-handover checks can become more accurate."],
+    ["Protection groups", "Requests before abandonment can be discovered through local networks."],
+    ["Local institutions", "A safe temporary care structure can be tested at a local level."]
+  ] as [string, string][],
+  text: {
+    brand: "Poom : Lifelong Companion",
+    download: "App Download",
+    introTitle: "Poom : Lifelong Companion",
+    introSubtitle: "Stay together for life",
+    heroEyebrow: "Another option before giving up a companion animal",
+    heroTitle: "Poom safely connects guardians in difficult situations with people who can help.",
+    heroText:
+      "The website explains Poom's purpose and safety principles. Requests, 1:1 matching, private chat, and handover take place in the app.",
+    serviceButton: "View Service Flow",
+    appButton: "What the app does",
+    whyEyebrow: "Why",
+    whyTitle: "Before abandonment becomes the last option, a quiet way to ask for help is needed.",
+    serviceEyebrow: "Service Flow",
+    serviceTitle: "Poom designs procedure and verification before emotional appeal.",
+    appEyebrow: "App Experience",
+    appTitle: "The app shows only the features each role needs.",
+    webTitle: "Website Role",
+    appRoleTitle: "App Role",
+    webItems: ["Explains the problem and principles.", "Receives interest and partnership inquiries before launch.", "Does not handle personal requests, chats, or contacts."],
+    appItems: ["Registers help requests and care conditions.", "Handles mutual confirmation between requester and caregiver.", "Provides private chat and handover after matching."],
+    trustEyebrow: "Trust",
+    trustTitle: "Safety principles Poom protects",
+    beforeEyebrow: "Before Matching",
+    beforeTitle: "Safe connection starts when both sides are prepared.",
+    launchEyebrow: "Launch Plan",
+    launchTitle: "Poom starts small and expands safely.",
+    faqEyebrow: "FAQ",
+    faqTitle: "Questions people may have when first seeing Poom",
+    togetherEyebrow: "Together",
+    togetherTitle: "Poom is not a service solved alone, but a structure built with local communities.",
+    togetherText:
+      "Companion animal issues are hard to solve through one person's goodwill alone. Poom prepares a connection model where guardians, caregivers, and local experts can work from the same standards.",
+    noteTitle: "Web explains, app executes",
+    noteText: "Sensitive conversations and personal data are handled only after matching inside the app, not on the public website.",
+    appLabel: "Poom App",
+    downloadTitle: "The Poom app is being prepared for safer mobile use.",
+    downloadText: "Requests, mutual matching, private chat, and handover will be handled in the app.",
+    footerText: "The web explains, the app executes. Poom prepares a safe connection before abandonment becomes the last option."
+  }
+};
+
+const koreanContent = {
+  navItems,
+  audienceLabels,
+  audienceCopy,
+  serviceSteps: serviceSteps.map((step) => [step.title, step.copy] as [string, string]),
+  appPreviewSteps,
+  reasons,
+  trustPrinciples,
+  preparationItems,
+  roadmapItems,
+  faqs,
+  partnerItems,
+  text: {
+    brand: "품 : 평생의 반려(伴侶)",
+    download: "앱 다운로드",
+    introTitle: "품 : 평생의 반려(伴侶)",
+    introSubtitle: "평생을 함께하다",
+    heroEyebrow: "반려동물을 포기하기 전, 연결되는 다음 선택지",
+    heroTitle: "품은 사정이 생긴 보호자와 도움을 줄 수 있는 사람을 안전하게 연결합니다.",
+    heroText:
+      "웹사이트는 품의 취지와 안전 원칙을 설명하는 공간입니다. 실제 요청, 1대1 매칭, 비공개 채팅, 인수인계는 앱에서 진행됩니다.",
+    serviceButton: "서비스 흐름 보기",
+    appButton: "앱에서 하는 일",
+    whyEyebrow: "Why",
+    whyTitle: "유기라는 마지막 선택 전에, 조용한 도움 요청이 필요합니다.",
+    serviceEyebrow: "Service Flow",
+    serviceTitle: "품은 감정적 호소보다 절차와 확인을 먼저 설계합니다.",
+    appEyebrow: "App Experience",
+    appTitle: "앱에서는 역할에 따라 필요한 기능만 보여줍니다.",
+    webTitle: "웹사이트의 역할",
+    appRoleTitle: "앱의 역할",
+    webItems: ["서비스의 문제의식과 원칙을 설명합니다.", "앱 출시 전 관심자와 협력 문의를 받습니다.", "개인 요청, 채팅, 연락처는 다루지 않습니다."],
+    appItems: ["도움 요청과 보호 가능 조건을 등록합니다.", "요청자와 보호 가능자의 상호 확정을 처리합니다.", "매칭 이후 비공개 채팅과 인수인계를 진행합니다."],
+    trustEyebrow: "Trust",
+    trustTitle: "품이 지키려는 안전 원칙",
+    beforeEyebrow: "Before Matching",
+    beforeTitle: "서로가 준비해야 안전한 연결이 시작됩니다.",
+    launchEyebrow: "Launch Plan",
+    launchTitle: "품은 작게 시작하고, 안전하게 넓혀갑니다.",
+    faqEyebrow: "FAQ",
+    faqTitle: "처음 품을 볼 때 궁금할 수 있는 것들",
+    togetherEyebrow: "Together",
+    togetherTitle: "품은 혼자 해결하는 서비스가 아니라 지역과 함께 만드는 구조입니다.",
+    togetherText:
+      "반려동물을 둘러싼 문제는 한 사람의 선의만으로 해결되기 어렵습니다. 품은 보호자, 보호 가능자, 지역 전문가가 같은 기준을 보고 움직일 수 있는 연결 방식을 준비합니다.",
+    noteTitle: "웹은 설명, 앱은 실행",
+    noteText: "민감한 대화와 개인정보는 공개 웹이 아니라 앱의 매칭 이후 단계에서만 다룹니다.",
+    appLabel: "품 App",
+    downloadTitle: "품 앱은 모바일에서 더 안전하게 이용할 수 있도록 준비 중입니다.",
+    downloadText: "앱에서는 요청 등록, 상호 매칭, 비공개 채팅, 인수인계를 진행합니다.",
+    footerText: "웹은 설명, 앱은 실행. 품은 유기라는 마지막 선택 전에 안전한 연결을 준비합니다."
+  }
+};
+
 function App() {
   const [selectedAudience, setSelectedAudience] = useState<Audience>("guardian");
+  const [language, setLanguage] = useState<Language>("ko");
   const [activeNav, setActiveNav] = useState("why");
   const [activePreviewStep, setActivePreviewStep] = useState(0);
   const [previewFlash, setPreviewFlash] = useState(false);
   const previewRef = useRef<HTMLDivElement | null>(null);
+  const content = language === "ko" ? koreanContent : englishContent;
 
   useEffect(() => {
-    const sections = navItems
+    const sections = content.navItems
       .map((item) => document.getElementById(item.id))
       .filter((section): section is HTMLElement => Boolean(section));
 
@@ -186,15 +388,19 @@ function App() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, []);
+  }, [content.navItems]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setActivePreviewStep((step) => (step + 1) % appPreviewSteps.length);
+      setActivePreviewStep((step) => (step + 1) % content.appPreviewSteps.length);
     }, 2600);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [content.appPreviewSteps.length]);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   useEffect(() => {
     const revealItems = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
@@ -227,23 +433,27 @@ function App() {
 
   return (
     <>
-      <Intro />
-      <Header activeNav={activeNav} />
+      <Intro title={content.text.introTitle} subtitle={content.text.introSubtitle} />
+      <Header
+        activeNav={activeNav}
+        brand={content.text.brand}
+        downloadLabel={content.text.download}
+        language={language}
+        navItems={content.navItems}
+        onLanguageChange={setLanguage}
+      />
       <main>
         <section className="hero">
           <div className="hero-copy hero-entrance">
-            <p className="eyebrow">반려동물을 포기하기 전, 연결되는 다음 선택지</p>
-            <h1>품은 사정이 생긴 보호자와 도움을 줄 수 있는 사람을 안전하게 연결합니다.</h1>
-            <p className="hero-text">
-              웹사이트는 품의 취지와 안전 원칙을 설명하는 공간입니다. 실제 요청, 1대1 매칭, 비공개 채팅,
-              인수인계는 앱에서 진행됩니다.
-            </p>
+            <p className="eyebrow">{content.text.heroEyebrow}</p>
+            <h1>{content.text.heroTitle}</h1>
+            <p className="hero-text">{content.text.heroText}</p>
             <div className="hero-actions">
               <a className="primary-button" href="#service">
-                서비스 흐름 보기
+                {content.text.serviceButton}
               </a>
               <button className="secondary-button" type="button" onClick={highlightPreview}>
-                앱에서 하는 일
+                {content.text.appButton}
               </button>
             </div>
           </div>
@@ -251,25 +461,29 @@ function App() {
             ref={previewRef}
             activeStep={activePreviewStep}
             flash={previewFlash}
+            label={content.text.appLabel}
+            noteText={content.text.noteText}
+            noteTitle={content.text.noteTitle}
+            steps={content.appPreviewSteps}
           />
         </section>
 
-        <InfoSection id="why" eyebrow="Why" title="유기라는 마지막 선택 전에, 조용한 도움 요청이 필요합니다.">
-          <div className="reason-grid">{reasons.map(([title, copy]) => renderInfoCard(title, copy))}</div>
+        <InfoSection id="why" eyebrow={content.text.whyEyebrow} title={content.text.whyTitle}>
+          <div className="reason-grid">{content.reasons.map(([title, copy]) => renderInfoCard(title, copy))}</div>
         </InfoSection>
 
         <section className="service-section reveal" id="service">
           <div className="section-heading">
-            <p className="eyebrow">Service Flow</p>
-            <h2>품은 감정적 호소보다 절차와 확인을 먼저 설계합니다.</h2>
+            <p className="eyebrow">{content.text.serviceEyebrow}</p>
+            <h2>{content.text.serviceTitle}</h2>
           </div>
           <div className="flow-list">
-            {serviceSteps.map((step, index) => (
-              <article key={step.title}>
+            {content.serviceSteps.map(([title, copy], index) => (
+              <article key={title}>
                 <span>{String(index + 1).padStart(2, "0")}</span>
                 <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.copy}</p>
+                  <h3>{title}</h3>
+                  <p>{copy}</p>
                 </div>
               </article>
             ))}
@@ -279,82 +493,98 @@ function App() {
         <section className="audience-section reveal" id="app-experience">
           <div className="section-row">
             <div className="section-heading">
-              <p className="eyebrow">App Experience</p>
-              <h2>앱에서는 역할에 따라 필요한 기능만 보여줍니다.</h2>
+              <p className="eyebrow">{content.text.appEyebrow}</p>
+              <h2>{content.text.appTitle}</h2>
             </div>
             <div className="segmented-control" role="group" aria-label="대상 선택">
-              {(Object.keys(audienceLabels) as Audience[]).map((audience) => (
+              {(Object.keys(content.audienceLabels) as Audience[]).map((audience) => (
                 <button
                   className={selectedAudience === audience ? "active" : ""}
                   key={audience}
                   type="button"
                   onClick={() => setSelectedAudience(audience)}
                 >
-                  {audienceLabels[audience]}
+                  {content.audienceLabels[audience]}
                 </button>
               ))}
             </div>
           </div>
           <div className="feature-grid">
-            {audienceCopy[selectedAudience].map((feature) => renderInfoCard(feature.title, feature.copy))}
+            {content.audienceCopy[selectedAudience].map((feature) => renderInfoCard(feature.title, feature.copy))}
           </div>
         </section>
 
         <section className="split-section reveal">
           <article className="principle-panel">
             <p className="eyebrow">Web</p>
-            <h2>웹사이트의 역할</h2>
+            <h2>{content.text.webTitle}</h2>
             <ul>
-              <li>서비스의 문제의식과 원칙을 설명합니다.</li>
-              <li>앱 출시 전 관심자와 협력 문의를 받습니다.</li>
-              <li>개인 요청, 채팅, 연락처는 다루지 않습니다.</li>
+              {content.text.webItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </article>
           <article className="principle-panel app-panel">
             <p className="eyebrow">App</p>
-            <h2>앱의 역할</h2>
+            <h2>{content.text.appRoleTitle}</h2>
             <ul>
-              <li>도움 요청과 보호 가능 조건을 등록합니다.</li>
-              <li>요청자와 보호 가능자의 상호 확정을 처리합니다.</li>
-              <li>매칭 이후 비공개 채팅과 인수인계를 진행합니다.</li>
+              {content.text.appItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </article>
         </section>
 
         <section className="trust-section reveal" id="trust">
           <div className="section-heading">
-            <p className="eyebrow">Trust</p>
-            <h2>품이 지키려는 안전 원칙</h2>
+            <p className="eyebrow">{content.text.trustEyebrow}</p>
+            <h2>{content.text.trustTitle}</h2>
           </div>
-          <div className="trust-grid">{trustPrinciples.map(([title, copy]) => renderInfoCard(title, copy))}</div>
+          <div className="trust-grid">{content.trustPrinciples.map(([title, copy]) => renderInfoCard(title, copy))}</div>
         </section>
 
-        <ChecklistSection />
-        <RoadmapSection />
-        <FaqSection />
-        <PartnerSection />
-        <DownloadSection />
-        <Footer />
+        <ChecklistSection items={content.preparationItems} text={content.text} />
+        <RoadmapSection items={content.roadmapItems} text={content.text} />
+        <FaqSection faqs={content.faqs} text={content.text} />
+        <PartnerSection items={content.partnerItems} text={content.text} />
+        <DownloadSection text={content.text} />
+        <Footer text={content.text} />
       </main>
     </>
   );
 }
 
-function Intro() {
+function Intro({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <section className="intro-screen" aria-hidden="true">
       <div className="intro-brand">
         <span className="intro-mark">품</span>
         <span className="intro-text">
-          <span className="intro-typed">품 : 평생의 반려(伴侶)</span>
+          <span className="intro-typed" style={{ "--typing-width": `${Math.max(title.length, 16)}ch` } as React.CSSProperties}>
+            {title}
+          </span>
         </span>
-        <span className="intro-subtitle">평생을 함께하다</span>
+        <span className="intro-subtitle">{subtitle}</span>
       </div>
     </section>
   );
 }
 
-function Header({ activeNav }: { activeNav: string }) {
+function Header({
+  activeNav,
+  brand,
+  downloadLabel,
+  language,
+  navItems,
+  onLanguageChange
+}: {
+  activeNav: string;
+  brand: string;
+  downloadLabel: string;
+  language: Language;
+  navItems: NavItem[];
+  onLanguageChange: (language: Language) => void;
+}) {
   const headerRef = useRef<HTMLElement | null>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
 
@@ -383,7 +613,7 @@ function Header({ activeNav }: { activeNav: string }) {
       <header className="topbar" ref={headerRef}>
         <a className="brand" href="#" aria-label="품 홈">
           <span className="brand-mark">품</span>
-          <span>품 : 평생의 반려(伴侶)</span>
+          <span>{brand}</span>
         </a>
         <nav className="nav" aria-label="현재 섹션">
           {navItems.map((item) => (
@@ -396,9 +626,27 @@ function Header({ activeNav }: { activeNav: string }) {
             </span>
           ))}
         </nav>
-        <a className="ghost-button" href="#download">
-          앱 다운로드
-        </a>
+        <div className="topbar-actions">
+          <div className="language-toggle" aria-label="언어 설정">
+            <button
+              className={language === "ko" ? "active" : ""}
+              type="button"
+              onClick={() => onLanguageChange("ko")}
+            >
+              KOR
+            </button>
+            <button
+              className={language === "en" ? "active" : ""}
+              type="button"
+              onClick={() => onLanguageChange("en")}
+            >
+              ENG
+            </button>
+          </div>
+          <a className="ghost-button" href="#download">
+            {downloadLabel}
+          </a>
+        </div>
       </header>
       <div className="topbar-spacer" style={{ height: headerHeight }} aria-hidden="true"></div>
     </>
@@ -407,21 +655,21 @@ function Header({ activeNav }: { activeNav: string }) {
 
 const AppPreview = React.forwardRef<
   HTMLDivElement,
-  { activeStep: number; flash: boolean }
->(function AppPreview({ activeStep, flash }, ref) {
+  { activeStep: number; flash: boolean; label: string; noteText: string; noteTitle: string; steps: Step[] }
+>(function AppPreview({ activeStep, flash, label, noteText, noteTitle, steps }, ref) {
   return (
     <div className={`hero-panel ${flash ? "preview-flash" : ""}`} id="app-preview" ref={ref} aria-label="품 서비스 구조 요약">
       <div className="phone-shell">
         <div className="phone-top">
           <span></span>
-          <strong>품 App</strong>
+          <strong>{label}</strong>
         </div>
         <div className="app-progress" aria-hidden="true">
-          {appPreviewSteps.map((step, index) => (
+          {steps.map((step, index) => (
             <span className={index <= activeStep ? "active" : ""} key={step.title}></span>
           ))}
         </div>
-        {appPreviewSteps.map((step, index) => (
+        {steps.map((step, index) => (
           <div
             className={`app-card ${activeStep === index ? "active" : ""}`}
             key={step.title}
@@ -433,8 +681,8 @@ const AppPreview = React.forwardRef<
         ))}
       </div>
       <div className="hero-note">
-        <strong>웹은 설명, 앱은 실행</strong>
-        <p>민감한 대화와 개인정보는 공개 웹이 아니라 앱의 매칭 이후 단계에서만 다룹니다.</p>
+        <strong>{noteTitle}</strong>
+        <p>{noteText}</p>
       </div>
     </div>
   );
@@ -452,13 +700,13 @@ function InfoSection({ id, eyebrow, title, children }: { id: string; eyebrow: st
   );
 }
 
-function DownloadSection() {
+function DownloadSection({ text }: { text: typeof koreanContent.text }) {
   return (
     <section className="download-section reveal" id="download">
       <div>
         <p className="eyebrow">App Download</p>
-        <h2>품 앱은 모바일에서 더 안전하게 이용할 수 있도록 준비 중입니다.</h2>
-        <p>앱에서는 요청 등록, 상호 매칭, 비공개 채팅, 인수인계를 진행합니다.</p>
+        <h2>{text.downloadTitle}</h2>
+        <p>{text.downloadText}</p>
       </div>
       <div className="download-actions" aria-label="앱 다운로드">
         <button className="store-button" type="button">
@@ -478,15 +726,15 @@ function DownloadSection() {
   );
 }
 
-function ChecklistSection() {
+function ChecklistSection({ items, text }: { items: [string, string][]; text: typeof koreanContent.text }) {
   return (
     <section className="checklist-section reveal">
       <div className="section-heading">
-        <p className="eyebrow">Before Matching</p>
-        <h2>서로가 준비해야 안전한 연결이 시작됩니다.</h2>
+        <p className="eyebrow">{text.beforeEyebrow}</p>
+        <h2>{text.beforeTitle}</h2>
       </div>
       <div className="checklist-grid">
-        {preparationItems.map(([title, copy], index) => (
+        {items.map(([title, copy], index) => (
           <article key={title}>
             <span>{index + 1}</span>
             <div>
@@ -500,15 +748,15 @@ function ChecklistSection() {
   );
 }
 
-function RoadmapSection() {
+function RoadmapSection({ items, text }: { items: [string, string][]; text: typeof koreanContent.text }) {
   return (
     <section className="roadmap-section reveal">
       <div className="section-heading">
-        <p className="eyebrow">Launch Plan</p>
-        <h2>품은 작게 시작하고, 안전하게 넓혀갑니다.</h2>
+        <p className="eyebrow">{text.launchEyebrow}</p>
+        <h2>{text.launchTitle}</h2>
       </div>
       <div className="roadmap-line">
-        {roadmapItems.map(([title, copy]) => (
+        {items.map(([title, copy]) => (
           <article key={title}>
             <span></span>
             <h3>{title}</h3>
@@ -520,12 +768,12 @@ function RoadmapSection() {
   );
 }
 
-function FaqSection() {
+function FaqSection({ faqs, text }: { faqs: [string, string][]; text: typeof koreanContent.text }) {
   return (
     <section className="faq-section reveal" id="faq">
       <div className="section-heading">
-        <p className="eyebrow">FAQ</p>
-        <h2>처음 품을 볼 때 궁금할 수 있는 것들</h2>
+        <p className="eyebrow">{text.faqEyebrow}</p>
+        <h2>{text.faqTitle}</h2>
       </div>
       <div className="faq-list">
         {faqs.map(([question, answer]) => (
@@ -539,32 +787,29 @@ function FaqSection() {
   );
 }
 
-function PartnerSection() {
+function PartnerSection({ items, text }: { items: [string, string][]; text: typeof koreanContent.text }) {
   return (
     <section className="partner-section reveal">
       <div className="partner-copy">
-        <p className="eyebrow">Together</p>
-        <h2>품은 혼자 해결하는 서비스가 아니라 지역과 함께 만드는 구조입니다.</h2>
-        <p>
-          반려동물을 둘러싼 문제는 한 사람의 선의만으로 해결되기 어렵습니다. 품은 보호자, 보호 가능자,
-          지역 전문가가 같은 기준을 보고 움직일 수 있는 연결 방식을 준비합니다.
-        </p>
+        <p className="eyebrow">{text.togetherEyebrow}</p>
+        <h2>{text.togetherTitle}</h2>
+        <p>{text.togetherText}</p>
       </div>
       <div className="partner-list">
-        {partnerItems.map(([title, copy]) => renderInfoCard(title, copy))}
+        {items.map(([title, copy]) => renderInfoCard(title, copy))}
       </div>
     </section>
   );
 }
 
-function Footer() {
+function Footer({ text }: { text: typeof koreanContent.text }) {
   return (
     <footer className="site-footer">
       <div>
-        <strong>품 : 평생의 반려(伴侶)</strong>
-        <p>웹은 설명, 앱은 실행. 품은 유기라는 마지막 선택 전에 안전한 연결을 준비합니다.</p>
+        <strong>{text.brand}</strong>
+        <p>{text.footerText}</p>
       </div>
-      <a href="#download">앱 다운로드</a>
+      <a href="#download">{text.download}</a>
     </footer>
   );
 }
