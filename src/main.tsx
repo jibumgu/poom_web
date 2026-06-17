@@ -161,7 +161,6 @@ function App() {
   const [activeNav, setActiveNav] = useState("why");
   const [activePreviewStep, setActivePreviewStep] = useState(0);
   const [previewFlash, setPreviewFlash] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const previewRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -198,22 +197,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const updateProgress = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0);
-    };
-
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-
-    return () => {
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, []);
-
-  useEffect(() => {
     const revealItems = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
 
     const observer = new IntersectionObserver(
@@ -235,11 +218,6 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  const handleNavClick = (sectionId: string) => {
-    setActiveNav(sectionId);
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   const highlightPreview = () => {
     previewRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     setPreviewFlash(false);
@@ -250,7 +228,7 @@ function App() {
   return (
     <>
       <Intro />
-      <Header activeNav={activeNav} progress={scrollProgress} onNavClick={handleNavClick} />
+      <Header activeNav={activeNav} />
       <main>
         <section className="hero">
           <div className="hero-copy hero-entrance">
@@ -376,38 +354,54 @@ function Intro() {
   );
 }
 
-function Header({
-  activeNav,
-  progress,
-  onNavClick
-}: {
-  activeNav: string;
-  progress: number;
-  onNavClick: (sectionId: string) => void;
-}) {
+function Header({ activeNav }: { activeNav: string }) {
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const header = headerRef.current;
+
+    if (!header) {
+      return;
+    }
+
+    const updateHeaderHeight = () => setHeaderHeight(header.offsetHeight);
+    updateHeaderHeight();
+
+    const observer = new ResizeObserver(updateHeaderHeight);
+    observer.observe(header);
+    window.addEventListener("resize", updateHeaderHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateHeaderHeight);
+    };
+  }, []);
+
   return (
-    <header className="topbar">
-      <span className="scroll-progress" style={{ transform: `scaleX(${progress})` }} aria-hidden="true"></span>
-      <a className="brand" href="#" aria-label="품 홈">
-        <span className="brand-mark">품</span>
-        <span>품 : 평생의 반려(伴侶)</span>
-      </a>
-      <nav className="nav" aria-label="주요 메뉴">
-        {navItems.map((item) => (
-          <button
-            className={activeNav === item.id ? "active" : ""}
-            key={item.id}
-            type="button"
-            onClick={() => onNavClick(item.id)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
-      <a className="ghost-button" href="#download">
-        앱 다운로드
-      </a>
-    </header>
+    <>
+      <header className="topbar" ref={headerRef}>
+        <a className="brand" href="#" aria-label="품 홈">
+          <span className="brand-mark">품</span>
+          <span>품 : 평생의 반려(伴侶)</span>
+        </a>
+        <nav className="nav" aria-label="현재 섹션">
+          {navItems.map((item) => (
+            <span
+              className={activeNav === item.id ? "active" : ""}
+              aria-current={activeNav === item.id ? "location" : undefined}
+              key={item.id}
+            >
+              {item.label}
+            </span>
+          ))}
+        </nav>
+        <a className="ghost-button" href="#download">
+          앱 다운로드
+        </a>
+      </header>
+      <div className="topbar-spacer" style={{ height: headerHeight }} aria-hidden="true"></div>
+    </>
   );
 }
 
